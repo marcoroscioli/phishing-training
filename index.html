@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard Training - Email Security Awareness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .guide-content {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .guide-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .guide-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .guide-content::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .red-flag {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .example {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .checklist {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .checklist li {
+            margin: 10px 0;
+            list-style: none;
+        }
+
+        /* Game Styles */
+        .game-container {
+            text-align: center;
+        }
+
+        .email-simulator {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .email-header {
+            background: #e9ecef;
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .email-content {
+            padding: 20px;
+            text-align: left;
+            min-height: 200px;
+        }
+
+        .email-actions {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .action-btn.safe {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .action-btn.danger {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .next-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🛡️ PhishGuard Training</h1>
+            <p>Master Email Security & Protect Your Organization</p>
+        </header>
+
+        <nav class="nav">
+            <button class="nav-btn active" onclick="showSection('guide')">📚 Training Guide</button>
+            <button class="nav-btn" onclick="showSection('game')">🎮 Phishing Game</button>
+            <button class="nav-btn" onclick="showSection('quiz')">🧠 Knowledge Quiz</button>
+        </nav>
+
+        <section id="guide" class="content-section active">
+            <div class="guide-content">
+                <h2>🎯 Email Phishing Awareness Guide</h2>
+                
+                <h3>What is Email Phishing?</h3>
+                <p>Email phishing is a cybercrime where attackers send fraudulent emails designed to trick recipients into revealing sensitive information, downloading malicious software, or taking actions that compromise security.</p>
+
+                <h3>🚨 Common Phishing Techniques</h3>
+                
+                <h4>1. Urgency and Fear Tactics</h4>
+                <div class="red-flag">
+                    <strong>Red Flags:</strong>
+                    <ul>
+                        <li>"Your account will be suspended in 24 hours!"</li>
+                        <li>"Immediate action required"</li>
+                        <li>"Security breach detected"</li>
+                        <li>"Click now or lose access"</li>
+                    </ul>
+                </div>
+
+                <h4>2. Impersonation Attacks</h4>
+                <div class="red-flag">
+                    <strong>Red Flags:</strong>
+                    <ul>
+                        <li>Emails from "IT Support," "HR Department," or "CEO"</li>
+                        <li>Slight misspellings in sender domains</li>
+                        <li>Generic greetings like "Dear Employee"</li>
+                    </ul>
+                </div>
+
+                <h4>3. Credential Harvesting</h4>
+                <div class="example">
+                    <strong>Example:</strong> A fake Microsoft 365 login page designed to steal your work credentials.
+                </div>
+
+                <h4>4. Malicious Attachments</h4>
+                <div class="red-flag">
+                    <strong>Warning Signs:</strong>
+                    <ul>
+                        <li>Unexpected .exe, .zip, .scr files</li>
+                        <li>"Invoice" or "Receipt" from unknown senders</li>
+                        <li>Requests to "enable macros"</li>
+                    </ul>
+                </div>
+
+                <h3>🔍 How to Identify Phishing Emails</h3>
+                
+                <div class="checklist">
+                    <h4>Security Checklist:</h4>
+                    <ul>
+                        <li><input type="checkbox"> Check sender's email address carefully</li>
+                        <li><input type="checkbox"> Look for poor grammar and spelling</li>
+                        <li><input type="checkbox"> Verify unexpected requests independently</li>
+                        <li><input type="checkbox"> Hover over links without clicking</li>
+                        <li><input type="checkbox"> Be cautious of urgent language</li>
+                        <li><input type="checkbox"> Question generic greetings</li>
+                    </ul>
+                </div>
+
+                <h3>🛡️ Best Practices for Protection</h3>
+                <ul>
+                    <li><strong>Pause and think</strong> before clicking or responding</li>
+                    <li><strong>Verify independently</strong> through different communication channels</li>
+                    <li><strong>Use official websites</strong> instead of email links</li>
+                    <li><strong>Keep software updated</strong> with latest security patches</li>
+                    <li><strong>Report suspicious emails</strong> to IT security immediately</li>
+                </ul>
+
+                <h3>🚨 If You Suspect Phishing</h3>
+                <div class="example">
+                    <strong>Immediate Actions:</strong><br>
+                    1. Don't click, download, or respond<br>
+                    2. Take a screenshot for documentation<br>
+                    3. Report to IT security following company procedures<br>
+                    4. If you've already clicked - change passwords immediately and notify IT
+                </div>
+            </div>
+        </section>
+
+        <section id="game" class="content-section">
+            <div class="game-container">
+                <h2>🎮 Phishing Detection Game</h2>
+                <div class="score">Score: <span id="score">0</span> / <span id="total">0</span></div>
+                
+                <div class="email-simulator">
+                    <div class="email-header">
+                        <div><strong>From:</strong> <span id="email-from"></span></div>
+                        <div><strong>Subject:</strong> <span id="email-subject"></span></div>
+                        <div><strong>Date:</strong> <span id="email-date"></span></div>
+                    </div>
+                    <div class="email-content" id="email-body"></div>
+                    <div class="email-actions">
+                        <button class="action-btn safe" onclick="makeChoice('safe')">✅ This Email is Safe</button>
+                        <button class="action-btn danger" onclick="makeChoice('phishing')">⚠️ This is Phishing</button>
+                    </div>
+                </div>
+
+                <div id="feedback" class="feedback"></div>
+                <button id="next-btn" class="next-btn" onclick="nextEmail()" style="display:none;">Next Email →</button>
+            </div>
+        </section>
+
+        <section id="quiz" class="content-section">
+            <h2>🧠 Knowledge Quiz</h2>
+            <div id="quiz-container">
+                <div id="quiz-question"></div>
+                <div id="quiz-options"></div>
+                <button id="quiz-submit" onclick="submitQuizAnswer()" style="display:none;">Submit Answer</button>
+                <div id="quiz-feedback"></div>
+                <div id="quiz-score">Quiz Score: <span id="quiz-points">0</span> / <span id="quiz-total">0</span></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Game Data
+        const emails = [
+            {
+                from: "security@company.com",
+                subject: "Urgent: Account Verification Required",
+                date: "Today 2:15 PM",
+                body: "Dear Employee,<br><br>We have detected suspicious activity on your account. Click here immediately to verify your credentials or your account will be suspended within 24 hours.<br><br><a href='#'>VERIFY NOW</a><br><br>IT Security Team",
+                type: "phishing",
+                explanation: "This email uses urgency tactics, threatens account suspension, and asks you to click a link to verify credentials - classic phishing signs!"
+            },
+            {
+                from: "hr@company.com",
+                subject: "Employee Benefits Update",
+                date: "Today 10:30 AM",
+                body: "Hi John,<br><br>We're updating our employee benefits package for 2024. Please review the attached PDF for details about your new health insurance options.<br><br>The changes will take effect next month. If you have questions, please contact HR at extension 1234.<br><br>Best regards,<br>Sarah - HR Department",
+                type: "safe",
+                explanation: "This email is from a legitimate internal source, has a reasonable request, provides alternative contact information, and doesn't pressure you into immediate action."
+            },
+            {
+                from: "ceo@companyy.com",
+                subject: "Urgent Wire Transfer Needed",
+                date: "Today 4:45 PM",
+                body: "I need you to process an urgent wire transfer to our new vendor. Please transfer $50,000 to the following account immediately:<br><br>Account: 1234567890<br>Routing: 987654321<br><br>This is confidential and time-sensitive. Do not discuss with others.<br><br>CEO",
+                type: "phishing",
+                explanation: "Notice the misspelled domain (companyy.com), urgent financial request, secrecy demands, and lack of proper verification procedures - classic CEO fraud!"
+            },
+            {
+                from: "it-support@company.com",
+                subject: "Monthly Security Update",
+                date: "Today 9:00 AM",
+                body: "Hello Team,<br><br>This is your monthly reminder to:<br>• Update your passwords<br>• Review your security settings<br>• Report any suspicious emails<br><br>For technical support, please submit a ticket through our portal or call extension 5678.<br><br>Stay secure!<br>IT Support Team",
+                type: "safe",
+                explanation: "This is a legitimate informational email with helpful reminders, proper contact information, and no suspicious requests or links."
+            },
+            {
+                from: "payroll@company.com",
+                subject: "Tax Document - Action Required",
+                date: "Today 1:20 PM",
+                body: "Dear Employee,<br><br>Your W-2 tax document is ready. Click the link below to download:<br><br><a href='#'>Download W-2 (expires in 2 hours)</a><br><br>If link doesn't work, please provide your SSN and DOB by reply for verification.<br><br>Payroll Department",
+                type: "phishing",
+                explanation: "Red flags: urgent expiration, suspicious download link, and request for sensitive information (SSN/DOB) via email - legitimate payroll wouldn't operate this way!"
+            }
+        ];
+
+        const quizQuestions = [
+            {
+                question: "Which of the following is the BEST way to verify a suspicious email from your CEO?",
+                options: [
+                    "Reply to the email asking for confirmation",
+                    "Call the CEO directly using their known phone number",
+                    "Forward the email to colleagues for their opinion", 
+                    "Check if the email address looks correct"
+                ],
+                correct: 1,
+                explanation: "Always verify through an independent communication channel when dealing with suspicious requests, especially involving money or sensitive information."
+            },
+            {
+                question: "What should you do if you accidentally click a suspicious link in an email?",
+                options: [
+                    "Close the browser and pretend nothing happened",
+                    "Immediately disconnect from the network and notify IT security",
+                    "Run a quick antivirus scan and continue working",
+                    "Change your email password and hope for the best"
+                ],
+                correct: 1,
+                explanation: "Quick action is crucial! Disconnecting prevents potential data theft, and IT security can help assess and contain any damage."
+            },
+            {
+                question: "Which email greeting is most likely to indicate a phishing attempt?",
+                options: [
+                    "Hi Sarah, hope you're doing well",
+                    "Dear Ms. Johnson",
+                    "Dear Valued Customer",
+                    "Hello Sarah from Accounting"
+                ],
+                correct: 2,
+                explanation: "Generic greetings like 'Dear Valued Customer' are red flags - legitimate companies usually personalize their communications with your actual name."
+            }
+        ];
+
+        // Game Variables
+        let currentEmailIndex = 0;
+        let gameScore = 0;
+        let gameTotal = 0;
+        let quizIndex = 0;
+        let quizScore = 0;
+        let selectedQuizAnswer = -1;
+
+        // Navigation
+        function showSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(section).classList.add('active');
+            event.target.classList.add('active');
+
+            if (section === 'game') {
+                startGame();
+            } else if (section === 'quiz') {
+                startQuiz();
+            }
+        }
+
+        // Game Functions
+        function startGame() {
+            currentEmailIndex = 0;
+            gameScore = 0;
+            gameTotal = 0;
+            showEmail();
+        }
+
+        function showEmail() {
+            if (currentEmailIndex >= emails.length) {
+                showGameResults();
+                return;
+            }
+
+            const email = emails[currentEmailIndex];
+            document.getElementById('email-from').textContent = email.from;
+            document.getElementById('email-subject').textContent = email.subject;
+            document.getElementById('email-date').textContent = email.date;
+            document.getElementById('email-body').innerHTML = email.body;
+            
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            });
+        }
+
+        function makeChoice(choice) {
+            const email = emails[currentEmailIndex];
+            const feedback = document.getElementById('feedback');
+            const correct = choice === email.type;
+            
+            gameTotal++;
+            if (correct) gameScore++;
+
+            feedback.className = 'feedback ' + (correct ? 'correct' : 'incorrect');
+            feedback.innerHTML = `
+                <h3>${correct ? '✅ Correct!' : '❌ Incorrect'}</h3>
+                <p><strong>This email was ${email.type === 'phishing' ? 'PHISHING' : 'SAFE'}</strong></p>
+                <p>${email.explanation}</p>
+            `;
+            feedback.style.display = 'block';
+            
+            document.getElementById('score').textContent = gameScore;
+            document.getElementById('total').textContent = gameTotal;
+            document.getElementById('next-btn').style.display = 'inline-block';
+            
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+            });
+        }
+
+        function nextEmail() {
+            currentEmailIndex++;
+            showEmail();
+        }
+
+        function showGameResults() {
+            const percentage = Math.round((gameScore / gameTotal) * 100);
+            let message = '';
+            
+            if (percentage >= 90) message = "🏆 Excellent! You're a phishing detection expert!";
+            else if (percentage >= 70) message = "👍 Good job! Keep practicing to improve further.";
+            else if (percentage >= 50) message = "📚 Not bad, but review the training guide for better results.";
+            else message = "⚠️ Please review the training materials and try again.";
+
+            document.querySelector('.email-simulator').innerHTML = `
+                <div style="padding: 40px; text-align: center;">
+                    <h3>Game Complete!</h3>
+                    <div style="font-size: 48px; margin: 20px 0;">${percentage}%</div>
+                    <p style="font-size: 18px; margin-bottom: 20px;">${message}</p>
+                    <button onclick="startGame()" class="action-btn">Play Again</button>
+                </div>
+            `;
+        }
+
+        // Quiz Functions
+        function startQuiz() {
+            quizIndex = 0;
+            quizScore = 0;
+            selectedQuizAnswer = -1;
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) {
+                showQuizResults();
+                return;
+            }
+
+            const question = quizQuestions[quizIndex];
+            document.getElementById('quiz-question').innerHTML = `
+                <h3>Question ${quizIndex + 1}: ${question.question}</h3>
+            `;
+
+            const optionsHtml = question.options.map((option, index) => `
+                <div style="margin: 10px 0;">
+                    <label style="cursor: pointer; display: block; padding: 15px; background: #f8f9fa; border-radius: 10px; transition: background 0.3s;">
+                        <input type="radio" name="quiz-option" value="${index}" onchange="selectQuizAnswer(${index})" style="margin-right: 10px;">
+                        ${option}
+                    </label>
+                </div>
+            `).join('');
+
+            document.getElementById('quiz-options').innerHTML = optionsHtml;
+            document.getElementById('quiz-submit').style.display = 'none';
+            document.getElementById('quiz-feedback').innerHTML = '';
+        }
+
+        function selectQuizAnswer(index) {
+            selectedQuizAnswer = index;
+            document.getElementById('quiz-submit').style.display = 'inline-block';
+            
+            // Style selected option
+            document.querySelectorAll('label').forEach((label, i) => {
+                if (i === index) {
+                    label.style.background = '#667eea';
+                    label.style.color = 'white';
+                } else {
+                    label.style.background = '#f8f9fa';
+                    label.style.color = '#333';
+                }
+            });
+        }
+
+        function submitQuizAnswer() {
+            const question = quizQuestions[quizIndex];
+            const correct = selectedQuizAnswer === question.correct;
+            
+            if (correct) quizScore++;
+
+            document.getElementById('quiz-feedback').innerHTML = `
+                <div class="feedback ${correct ? 'correct' : 'incorrect'}" style="display: block;">
+                    <h4>${correct ? '✅ Correct!' : '❌ Incorrect'}</h4>
+                    <p>${question.explanation}</p>
+                    <button onclick="nextQuizQuestion()" class="next-btn">Next Question</button>
+                </div>
+            `;
+
+            document.getElementById('quiz-submit').style.display = 'none';
+            document.getElementById('quiz-points').textContent = quizScore;
+            document.getElementById('quiz-total').textContent = quizIndex + 1;
+        }
+
+        function nextQuizQuestion() {
+            quizIndex++;
+            selectedQuizAnswer = -1;
+            showQuizQuestion();
+        }
+
+        function showQuizResults() {
+            const percentage = Math.round((quizScore / quizQuestions.length) * 100);
+            let message = '';
+            
+            if (percentage >= 90) message = "🎓 Outstanding! You've mastered the material!";
+            else if (percentage >= 70) message = "👏 Well done! You have a solid understanding.";
+            else message = "📖 Review the guide and try again to improve your score.";
+
+            document.getElementById('quiz-container').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h3>Quiz Complete!</h3>
+                    <div style="font-size: 48px; margin: 20px 0; color: #667eea;">${percentage}%</div>
+                    <p style="font-size: 18px; margin-bottom: 20px;">${message}</p>
+                    <p>You scored ${quizScore} out of ${quizQuestions.length} questions correctly.</p>
+                    <button onclick="startQuiz()" class="action-btn" style="margin-top: 20px;">Retake Quiz</button>
+                </div>
+            `;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add some interactive elements to checkboxes
+            document.querySelectorAll('.checklist input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        this.parentElement.style.background = '#e8f5e8';
+                        this.parentElement.style.color = '#2d5a2d';
+                    } else {
+                        this.parentElement.style.background = 'transparent';
+                        this.parentElement.style.color = '#333';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
